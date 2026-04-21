@@ -22,7 +22,8 @@ export function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-8">
           <a href="#featured" className="text-sm font-medium text-neutral-600 hover:text-black transition-colors">{t("nav.buy")}</a>
-          <a href="#about" className="text-sm font-medium text-neutral-600 hover:text-black transition-colors">{t("nav.review")}</a>
+          <a href="#policy" className="text-sm font-medium text-neutral-600 hover:text-black transition-colors">{t("nav.review")}</a>
+          <a href="#policy" className="text-sm font-medium text-neutral-600 hover:text-black transition-colors">{t("nav.policy")}</a>
           <a href="#about" className="text-sm font-medium text-neutral-600 hover:text-black transition-colors">{t("nav.about")}</a>
         </nav>
 
@@ -85,8 +86,11 @@ export function Header() {
             <a href="#featured" onClick={closeMobileMenu} className="text-sm font-medium text-neutral-700 hover:text-black transition-colors">
               {t("nav.buy")}
             </a>
-            <a href="#about" onClick={closeMobileMenu} className="text-sm font-medium text-neutral-700 hover:text-black transition-colors">
+            <a href="#policy" onClick={closeMobileMenu} className="text-sm font-medium text-neutral-700 hover:text-black transition-colors">
               {t("nav.review")}
+            </a>
+            <a href="#policy" onClick={closeMobileMenu} className="text-sm font-medium text-neutral-700 hover:text-black transition-colors">
+              {t("nav.policy")}
             </a>
             <a href="#about" onClick={closeMobileMenu} className="text-sm font-medium text-neutral-700 hover:text-black transition-colors">
               {t("nav.about")}

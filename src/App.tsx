@@ -6,6 +6,7 @@
 import { Header } from "./components/layout/Header";
 import { Hero } from "./components/home/Hero";
 import { About } from "./components/home/About";
+import { TrustInfo } from "./components/home/TrustInfo";
 import { CartDrawer } from "./components/cart/CartDrawer";
 import { useLanguage } from "./lib/i18n";
 
@@ -58,7 +59,7 @@ export default function App() {
             ))}
           </div>
         </section>
-        
+        <TrustInfo />
         <About />
       </main>
     </div>

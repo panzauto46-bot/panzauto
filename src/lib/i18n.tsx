@@ -7,6 +7,7 @@ export const translations = {
     "nav.sell": "Sell",
     "nav.review": "Review",
     "nav.about": "About",
+    "nav.policy": "Policy",
     "nav.signin": "Sign In",
     "nav.postad": "Post an Ad",
     "cart.label": "Cart",
@@ -64,7 +65,20 @@ export const translations = {
     "about.l3": "95-120 mm: stronger low-mid torque and smoother pull.",
     "about.note": "Final setup should be adjusted to engine build, cam profile, throttle body size, and fuel map tuning.",
     "about.wa": "Let's Talk on WhatsApp",
-    "about.wamsg": "Hello Panz Auto, I would like to ask about velocity stack recommendations for my setup."
+    "about.wamsg": "Hello Panz Auto, I would like to ask about velocity stack recommendations for my setup.",
+    // Policy / Trust
+    "trust.title": "Buyer Protection & Store Policy",
+    "trust.subtitle": "Clear policy, transparent process, and faster response for every velocity stack order.",
+    "trust.shippingTitle": "Fast Packing & Shipping",
+    "trust.shippingDesc": "Orders before 15:00 WIB are packed the same day. We share tracking number immediately.",
+    "trust.warrantyTitle": "Product Warranty",
+    "trust.warrantyDesc": "Warranty claim is available for manufacturing defects with photo/video proof and complete unboxing record.",
+    "trust.returnTitle": "Return & Exchange",
+    "trust.returnDesc": "Size mismatch can be exchanged within 3 days after item received, as long as product remains in original condition.",
+    "trust.paymentTitle": "Secure Payment Methods",
+    "trust.paymentDesc": "Bank transfer and e-wallet are verified before dispatch to keep transactions safe for both buyer and seller.",
+    "trust.supportTitle": "Technical Consultation",
+    "trust.supportDesc": "Need help choosing stack length? We assist setup recommendation based on throttle body size and riding use."
   },
   id: {
     // Header
@@ -72,6 +86,7 @@ export const translations = {
     "nav.sell": "Jual",
     "nav.review": "Ulasan",
     "nav.about": "Tentang",
+    "nav.policy": "Kebijakan",
     "nav.signin": "Masuk",
     "nav.postad": "Pasang Iklan",
     "cart.label": "Keranjang",
@@ -129,7 +144,20 @@ export const translations = {
     "about.l3": "95-120 mm: dorongan torsi bawah-menengah lebih kuat dan tarikan lebih halus.",
     "about.note": "Setelan final tetap perlu disesuaikan dengan spek mesin, profil cam, ukuran throttle body, dan mapping bahan bakar.",
     "about.wa": "Mari Ngobrol di WhatsApp",
-    "about.wamsg": "Halo Panz Auto, saya ingin konsultasi rekomendasi velocity stack untuk setup motor saya."
+    "about.wamsg": "Halo Panz Auto, saya ingin konsultasi rekomendasi velocity stack untuk setup motor saya.",
+    // Policy / Trust
+    "trust.title": "Perlindungan Pembeli & Kebijakan Toko",
+    "trust.subtitle": "Kebijakan jelas, proses transparan, dan respon cepat untuk setiap pesanan velocity stack.",
+    "trust.shippingTitle": "Packing Cepat & Pengiriman",
+    "trust.shippingDesc": "Pesanan sebelum 15:00 WIB diproses di hari yang sama. Nomor resi langsung kami kirim setelah barang masuk ekspedisi.",
+    "trust.warrantyTitle": "Garansi Produk",
+    "trust.warrantyDesc": "Klaim garansi tersedia untuk cacat produksi dengan bukti foto/video serta rekaman unboxing lengkap.",
+    "trust.returnTitle": "Retur & Tukar Ukuran",
+    "trust.returnDesc": "Jika ukuran kurang sesuai, bisa tukar dalam 3 hari setelah barang diterima selama kondisi masih original.",
+    "trust.paymentTitle": "Metode Pembayaran Aman",
+    "trust.paymentDesc": "Transfer bank dan e-wallet diverifikasi terlebih dahulu sebelum pengiriman untuk menjaga keamanan transaksi.",
+    "trust.supportTitle": "Konsultasi Teknis",
+    "trust.supportDesc": "Butuh bantuan pilih panjang stack? Kami bantu rekomendasi sesuai ukuran throttle body dan kebutuhan pemakaian."
   }
 };
 
