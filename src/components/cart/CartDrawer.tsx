@@ -4,6 +4,11 @@ import { useCart } from "../../lib/cart";
 import { useLanguage } from "../../lib/i18n";
 
 type PaymentMethod = "transfer" | "ewallet";
+const bankTransferAccount = {
+  bank: "BRI",
+  accountNumber: "7369-01-028321-53-0",
+  accountHolder: "Pandu Darma Anugrah",
+};
 
 export function CartDrawer() {
   const { t, formatCurrency } = useLanguage();
@@ -141,6 +146,26 @@ export function CartDrawer() {
                     <option value="transfer">{t("cart.methodTransfer")}</option>
                     <option value="ewallet">{t("cart.methodEwallet")}</option>
                   </select>
+
+                  {paymentMethod === "transfer" && (
+                    <div className="rounded-md border border-neutral-300 bg-neutral-50 p-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                        {t("cart.transferTo")}
+                      </p>
+                      <p className="mt-2 text-sm text-black">
+                        <span className="font-medium">{t("cart.bankName")}:</span> {bankTransferAccount.bank}
+                      </p>
+                      <p className="mt-1 text-sm text-black">
+                        <span className="font-medium">{t("cart.accountNumber")}:</span>{" "}
+                        <span className="font-mono">{bankTransferAccount.accountNumber}</span>
+                      </p>
+                      <p className="mt-1 text-sm text-black">
+                        <span className="font-medium">{t("cart.accountHolder")}:</span>{" "}
+                        {bankTransferAccount.accountHolder}
+                      </p>
+                      <p className="mt-2 text-xs text-neutral-600">{t("cart.transferNote")}</p>
+                    </div>
+                  )}
 
                   <button
                     type="submit"

@@ -28,6 +28,11 @@ export const translations = {
     "cart.methodTransfer": "Bank Transfer",
     "cart.methodEwallet": "E-Wallet",
     "cart.methodCod": "COD (Pay at Store)",
+    "cart.transferTo": "Transfer To",
+    "cart.bankName": "Bank",
+    "cart.accountNumber": "Account Number",
+    "cart.accountHolder": "Account Name",
+    "cart.transferNote": "Please transfer exactly as the total amount and include your name in payment note.",
     "cart.payNow": "Pay Now",
     "cart.processing": "Processing Payment...",
     // Hero
@@ -107,6 +112,11 @@ export const translations = {
     "cart.methodTransfer": "Transfer Bank",
     "cart.methodEwallet": "E-Wallet",
     "cart.methodCod": "COD (Bayar di Tempat)",
+    "cart.transferTo": "Transfer Ke",
+    "cart.bankName": "Bank",
+    "cart.accountNumber": "Nomor Rekening",
+    "cart.accountHolder": "Atas Nama",
+    "cart.transferNote": "Mohon transfer sesuai total belanja dan cantumkan nama pemesan pada keterangan transfer.",
     "cart.payNow": "Bayar Sekarang",
     "cart.processing": "Memproses Pembayaran...",
     // Hero
