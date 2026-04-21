@@ -12,6 +12,44 @@ import { useLanguage } from "./lib/i18n";
 
 export default function App() {
   const { t, formatCurrency } = useLanguage();
+  const featuredVeloProducts = [
+    {
+      id: 1,
+      name: "Custom Velo Standard",
+      diameter: "28 mm",
+      height: "40 mm",
+      finish: "Black Anodize",
+      priceIdr: 80000,
+      img: "/images/about-zx25r2.jpg",
+    },
+    {
+      id: 2,
+      name: "Custom Velo Street",
+      diameter: "30 mm",
+      height: "55 mm",
+      finish: "Blue Anodize",
+      priceIdr: 90000,
+      img: "/images/hero-banner.jpg",
+    },
+    {
+      id: 3,
+      name: "Custom Velo Touring",
+      diameter: "32 mm",
+      height: "75 mm",
+      finish: "Black Gloss",
+      priceIdr: 110000,
+      img: "/images/about-zx25r2.jpg",
+    },
+    {
+      id: 4,
+      name: "Custom Velo Pro",
+      diameter: "34 mm",
+      height: "95 mm",
+      finish: "Blue Satin",
+      priceIdr: 135000,
+      img: "/images/hero-banner.jpg",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -26,33 +64,28 @@ export default function App() {
             <a href="#featured" className="font-semibold text-black underline underline-offset-4 hover:text-neutral-600">{t("feat.viewall")}</a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Motorcycle Listings Data */}
-            {[
-              { id: 1, make: "Yamaha", model: "NMAX 155", year: 2023, priceIdr: 31500000, specs: "5,200 km | Auto", img: "https://images.unsplash.com/photo-1627993077708-3ab84b5c7e19?auto=format&fit=crop&q=80&w=600" },
-              { id: 2, make: "Honda", model: "PCX 160", year: 2024, priceIdr: 32800000, specs: "1,100 km | Auto", img: "https://images.unsplash.com/photo-1692292395641-fc1734fe0e02?auto=format&fit=crop&q=80&w=600" },
-              { id: 3, make: "Honda", model: "Vario 160", year: 2023, priceIdr: 26000000, specs: "8,500 km | Auto", img: "https://images.unsplash.com/photo-1616428784950-621aa9069677?auto=format&fit=crop&q=80&w=600" },
-              { id: 4, make: "Kawasaki", model: "Ninja 250", year: 2022, priceIdr: 55000000, specs: "12,000 km | Manual", img: "https://images.unsplash.com/photo-1599819811279-d518ca28560c?auto=format&fit=crop&q=80&w=600" },
-            ].map((bike) => (
-              <div key={bike.id} className="group flex flex-col gap-3">
+            {featuredVeloProducts.map((product) => (
+              <div key={product.id} className="group flex flex-col gap-3">
                 <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100 relative">
-                  {/* Status Badge */}
-                  {bike.year === 2024 && (
+                  {product.id === 2 && (
                     <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1 text-xs font-bold tracking-wider">{t("feat.new")}</div>
                   )}
                   <img 
-                    src={bike.img}
-                    alt={`${bike.make} ${bike.model}`}
-                    referrerPolicy="no-referrer"
+                    src={product.img}
+                    alt={product.name}
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold text-black font-sans truncate">{bike.year} {bike.make} {bike.model}</h3>
-                  <div className="mt-1 flex items-center justify-between text-sm">
-                    <span className="text-neutral-500 font-mono">{bike.specs}</span>
-                    <span className="font-bold font-mono">{formatCurrency(bike.priceIdr)}</span>
+                  <h3 className="font-bold text-black font-sans truncate">{product.name}</h3>
+                  <p className="mt-1 text-sm text-neutral-500 font-mono">
+                    {t("feat.diameter")}: {product.diameter} | {t("feat.height")}: {product.height}
+                  </p>
+                  <div className="mt-2 flex items-center justify-between text-sm">
+                    <span className="text-neutral-500 font-mono">{t("feat.finish")}: {product.finish}</span>
+                    <span className="font-bold font-mono">{formatCurrency(product.priceIdr)}</span>
                   </div>
                 </div>
               </div>

@@ -57,9 +57,12 @@ export const translations = {
     "search.older": "1999 & Older",
     "search.button": "Buy",
     // Featured
-    "feat.title": "Featured Listings",
-    "feat.viewall": "View All",
+    "feat.title": "Custom Velocity Stack",
+    "feat.viewall": "View All Sizes",
     "feat.new": "NEW",
+    "feat.diameter": "Diameter",
+    "feat.height": "Height",
+    "feat.finish": "Finish",
     // About
     "about.title": "Velocity Stack Function",
     "about.p1": "Velocity stack helps smooth intake airflow into the throttle body, reducing turbulence and improving air charge consistency at the engine inlet.",
@@ -141,9 +144,12 @@ export const translations = {
     "search.older": "1999 & Kebawah",
     "search.button": "Beli",
     // Featured
-    "feat.title": "Iklan Pilihan",
-    "feat.viewall": "Lihat Semua",
+    "feat.title": "Custom Velo Pilihan",
+    "feat.viewall": "Lihat Semua Ukuran",
     "feat.new": "BARU",
+    "feat.diameter": "Diameter",
+    "feat.height": "Tinggi",
+    "feat.finish": "Finishing",
     // About
     "about.title": "Fungsi Velocity Stack",
     "about.p1": "Velocity stack membantu meluruskan aliran udara masuk ke throttle body, mengurangi turbulensi, dan membuat suplai udara ke mesin lebih stabil.",
