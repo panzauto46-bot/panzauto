@@ -47,7 +47,7 @@ export function SellerDashboard() {
   const removeListItem = (key: "features" | "featuresId" | "compatible", idx: number) =>
     setField(key, form[key].filter((_, i) => i !== idx));
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.name.trim() || !form.nameId.trim() || form.priceIdr <= 0) return;
     const clean = {
       ...form,
@@ -55,11 +55,11 @@ export function SellerDashboard() {
       featuresId: form.featuresId.filter((f) => f.trim()),
       compatible: form.compatible.filter((c) => c.trim()),
     };
-    if (editId !== null) { updateProduct(editId, clean); } else { addProduct(clean); }
+    if (editId !== null) { await updateProduct(editId, clean); } else { await addProduct(clean); }
     setView("list");
   };
 
-  const handleDelete = (id: number) => { deleteProduct(id); setDeleteConfirm(null); };
+  const handleDelete = async (id: number) => { await deleteProduct(id); setDeleteConfirm(null); };
 
   const inputCls = "w-full border border-neutral-300 bg-white px-3 py-2 text-sm text-black outline-none transition focus:border-black";
   const labelCls = "mb-1 block text-xs font-semibold uppercase tracking-wider text-neutral-500";

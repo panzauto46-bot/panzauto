@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { supabase } from "./supabase";
 
 export interface Product {
   id: number;
@@ -20,8 +21,68 @@ export interface Product {
   isNew: boolean;
 }
 
-const STORAGE_KEY = "panz-auto-products";
+/** Supabase row shape (snake_case) */
+interface ProductRow {
+  id: number;
+  name: string;
+  name_id: string;
+  diameter: string;
+  height: string;
+  finish: string;
+  finish_id: string;
+  price_idr: number;
+  img: string;
+  description: string;
+  description_id: string;
+  features: string[];
+  features_id: string[];
+  compatible: string[];
+  rating: number;
+  reviews: number;
+  is_new: boolean;
+}
 
+// --- Converters ---
+const rowToProduct = (r: ProductRow): Product => ({
+  id: r.id,
+  name: r.name,
+  nameId: r.name_id,
+  diameter: r.diameter,
+  height: r.height,
+  finish: r.finish,
+  finishId: r.finish_id,
+  priceIdr: r.price_idr,
+  img: r.img,
+  description: r.description,
+  descriptionId: r.description_id,
+  features: r.features ?? [],
+  featuresId: r.features_id ?? [],
+  compatible: r.compatible ?? [],
+  rating: r.rating,
+  reviews: r.reviews,
+  isNew: r.is_new,
+});
+
+const productToRow = (p: Omit<Product, "id">): Omit<ProductRow, "id"> => ({
+  name: p.name,
+  name_id: p.nameId,
+  diameter: p.diameter,
+  height: p.height,
+  finish: p.finish,
+  finish_id: p.finishId,
+  price_idr: p.priceIdr,
+  img: p.img,
+  description: p.description,
+  description_id: p.descriptionId,
+  features: p.features,
+  features_id: p.featuresId,
+  compatible: p.compatible,
+  rating: p.rating,
+  reviews: p.reviews,
+  is_new: p.isNew,
+});
+
+// --- Default products (fallback if no Supabase or empty table) ---
 export const defaultProducts: Product[] = [
   {
     id: 1,
@@ -151,73 +212,123 @@ export const defaultProducts: Product[] = [
 
 interface ProductContextType {
   products: Product[];
-  addProduct: (product: Omit<Product, "id">) => void;
-  updateProduct: (id: number, updates: Partial<Product>) => void;
-  deleteProduct: (id: number) => void;
+  loading: boolean;
+  addProduct: (product: Omit<Product, "id">) => Promise<void>;
+  updateProduct: (id: number, updates: Partial<Product>) => Promise<void>;
+  deleteProduct: (id: number) => Promise<void>;
   getProduct: (id: number) => Product | undefined;
-  resetProducts: () => void;
+  refreshProducts: () => Promise<void>;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-const getStoredProducts = (): Product[] | null => {
-  if (typeof window === "undefined") return null;
-
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (!raw) return null;
-
-  try {
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed as Product[];
-    }
-  } catch {
-    // Ignore corrupted data.
-  }
-
-  return null;
-};
-
 export function ProductProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(() => {
-    return getStoredProducts() ?? defaultProducts;
-  });
+  const [products, setProducts] = useState<Product[]>(defaultProducts);
+  const [loading, setLoading] = useState(true);
+
+  // --- Fetch products from Supabase ---
+  const fetchProducts = useCallback(async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const { data, error } = await supabase.from("products").select("*").order("id", { ascending: true });
+      if (error) {
+        console.error("Supabase fetch error:", error);
+        return;
+      }
+      if (data && data.length > 0) {
+        setProducts((data as ProductRow[]).map(rowToProduct));
+      }
+    } catch (err) {
+      console.error("Failed to fetch products:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    fetchProducts();
+  }, [fetchProducts]);
+
+  // --- CRUD operations ---
+  const addProduct = useCallback(async (product: Omit<Product, "id">) => {
+    if (!supabase) {
+      // Fallback: local only
+      const maxId = products.reduce((max, p) => Math.max(max, p.id), 0);
+      setProducts((prev) => [...prev, { ...product, id: maxId + 1 }]);
+      return;
+    }
+    const row = productToRow(product);
+    const { data, error } = await supabase.from("products").insert(row).select().single();
+    if (error) {
+      console.error("Supabase insert error:", error);
+      return;
+    }
+    if (data) {
+      setProducts((prev) => [...prev, rowToProduct(data as ProductRow)]);
     }
   }, [products]);
 
-  const addProduct = (product: Omit<Product, "id">) => {
-    const maxId = products.reduce((max, p) => Math.max(max, p.id), 0);
-    setProducts((prev) => [...prev, { ...product, id: maxId + 1 }]);
-  };
+  const updateProduct = useCallback(async (id: number, updates: Partial<Product>) => {
+    if (!supabase) {
+      setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)));
+      return;
+    }
+    // Convert camelCase updates to snake_case
+    const rowUpdates: Record<string, unknown> = {};
+    if (updates.name !== undefined) rowUpdates.name = updates.name;
+    if (updates.nameId !== undefined) rowUpdates.name_id = updates.nameId;
+    if (updates.diameter !== undefined) rowUpdates.diameter = updates.diameter;
+    if (updates.height !== undefined) rowUpdates.height = updates.height;
+    if (updates.finish !== undefined) rowUpdates.finish = updates.finish;
+    if (updates.finishId !== undefined) rowUpdates.finish_id = updates.finishId;
+    if (updates.priceIdr !== undefined) rowUpdates.price_idr = updates.priceIdr;
+    if (updates.img !== undefined) rowUpdates.img = updates.img;
+    if (updates.description !== undefined) rowUpdates.description = updates.description;
+    if (updates.descriptionId !== undefined) rowUpdates.description_id = updates.descriptionId;
+    if (updates.features !== undefined) rowUpdates.features = updates.features;
+    if (updates.featuresId !== undefined) rowUpdates.features_id = updates.featuresId;
+    if (updates.compatible !== undefined) rowUpdates.compatible = updates.compatible;
+    if (updates.rating !== undefined) rowUpdates.rating = updates.rating;
+    if (updates.reviews !== undefined) rowUpdates.reviews = updates.reviews;
+    if (updates.isNew !== undefined) rowUpdates.is_new = updates.isNew;
 
-  const updateProduct = (id: number, updates: Partial<Product>) => {
+    const { error } = await supabase.from("products").update(rowUpdates).eq("id", id);
+    if (error) {
+      console.error("Supabase update error:", error);
+      return;
+    }
     setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)));
-  };
+  }, []);
 
-  const deleteProduct = (id: number) => {
+  const deleteProduct = useCallback(async (id: number) => {
+    if (!supabase) {
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+      return;
+    }
+    const { error } = await supabase.from("products").delete().eq("id", id);
+    if (error) {
+      console.error("Supabase delete error:", error);
+      return;
+    }
     setProducts((prev) => prev.filter((p) => p.id !== id));
-  };
+  }, []);
 
-  const getProduct = (id: number) => products.find((p) => p.id === id);
-
-  const resetProducts = () => {
-    setProducts(defaultProducts);
-  };
+  const getProduct = useCallback((id: number) => products.find((p) => p.id === id), [products]);
 
   const value = useMemo(
     () => ({
       products,
+      loading,
       addProduct,
       updateProduct,
       deleteProduct,
       getProduct,
-      resetProducts,
+      refreshProducts: fetchProducts,
     }),
-    [products],
+    [products, loading, addProduct, updateProduct, deleteProduct, getProduct, fetchProducts],
   );
 
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
