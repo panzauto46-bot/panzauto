@@ -6,7 +6,7 @@ import { useCart } from "../../lib/cart";
 import { useAuth } from "../../lib/auth";
 
 export function Header() {
-  const { selectedLocale, setLocale, localeOptions, t, language } = useLanguage();
+  const { selectedLocale, setLocale, localeOptions, t } = useLanguage();
   const { itemCount, toggleCart } = useCart();
   const { session, isAuthenticated, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,7 +18,6 @@ export function Header() {
   const goFeatured = location.pathname === "/" ? "#featured" : "/#featured";
   const goPolicy = location.pathname === "/" ? "#policy" : "/#policy";
   const goAbout = location.pathname === "/" ? "#about" : "/#about";
-  const sellerDashboardLabel = language === "id" ? "Dashboard Seller" : "Seller Dashboard";
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -123,21 +122,13 @@ export function Header() {
               </button>
             </>
           ) : (
-            <>
-              <Link
-                to="/login"
-                className="hidden md:flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
-              >
-                <User className="h-4 w-4" aria-hidden="true" />
-                <span>{t("nav.signin")}</span>
-              </Link>
-              <Link
-                to="/login"
-                className="hidden md:block bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
-              >
-                {sellerDashboardLabel}
-              </Link>
-            </>
+            <Link
+              to="/login"
+              className="hidden md:flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
+            >
+              <User className="h-4 w-4" aria-hidden="true" />
+              <span>{t("nav.signin")}</span>
+            </Link>
           )}
           <button
             ref={menuButtonRef}
@@ -196,23 +187,14 @@ export function Header() {
                 </button>
               </>
             ) : (
-              <>
-                <Link
-                  to="/login"
-                  onClick={closeMobileMenu}
-                  className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
-                >
-                  <User className="h-4 w-4" aria-hidden="true" />
-                  <span>{t("nav.signin")}</span>
-                </Link>
-                <Link
-                  to="/login"
-                  onClick={closeMobileMenu}
-                  className="mt-1 bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
-                >
-                  {sellerDashboardLabel}
-                </Link>
-              </>
+              <Link
+                to="/login"
+                onClick={closeMobileMenu}
+                className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
+              >
+                <User className="h-4 w-4" aria-hidden="true" />
+                <span>{t("nav.signin")}</span>
+              </Link>
             )}
           </nav>
         </div>
