@@ -1,14 +1,20 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
-interface AuthSession {
-  sellerName: string;
-  marketplace: string;
+// --- Session Types ---
+
+interface BuyerSession {
+  role: "buyer";
+  name: string;
+  email: string;
+  picture?: string;
 }
 
-interface LoginPayload {
-  username: string;
-  password: string;
+interface OwnerSession {
+  role: "owner";
+  name: string;
 }
+
+export type AuthSession = BuyerSession | OwnerSession;
 
 interface LoginResult {
   success: boolean;
@@ -18,88 +24,85 @@ interface LoginResult {
 interface AuthContextType {
   session: AuthSession | null;
   isAuthenticated: boolean;
-  login: (payload: LoginPayload) => LoginResult;
+  isOwner: boolean;
+  isBuyer: boolean;
+  loginAsOwner: (username: string, password: string) => LoginResult;
+  loginWithGoogle: (credential: string) => void;
   logout: () => void;
 }
 
 const STORAGE_KEY = "panz-auto-auth";
-
-/**
- * Kredensial seller — hanya pemilik toko yang tahu.
- */
-const SELLER_USERNAME = "panzauto46";
-const SELLER_PASSWORD = "Pandudarma14";
+const OWNER_USERNAME = "panzauto46";
+const OWNER_PASSWORD = "Pandudarma14";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const getStoredSession = (): AuthSession | null => {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    return null;
-  }
-
+function decodeGoogleJwt(credential: string): { name: string; email: string; picture?: string } {
   try {
-    const parsed = JSON.parse(raw) as Partial<AuthSession>;
-    if (
-      typeof parsed.sellerName === "string" &&
-      parsed.sellerName.trim() &&
-      typeof parsed.marketplace === "string" &&
-      parsed.marketplace.trim()
-    ) {
-      return {
-        sellerName: parsed.sellerName.trim(),
-        marketplace: parsed.marketplace.trim(),
-      };
-    }
+    const payload = credential.split(".")[1];
+    const decoded = JSON.parse(atob(payload));
+    return {
+      name: (decoded.name as string) || (decoded.email as string) || "User",
+      email: (decoded.email as string) || "",
+      picture: decoded.picture as string | undefined,
+    };
   } catch {
-    // Ignore invalid data.
+    return { name: "User", email: "" };
   }
+}
 
+const getStoredSession = (): AuthSession | null => {
+  if (typeof window === "undefined") return null;
+  const raw = window.localStorage.getItem(STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as AuthSession;
+    if (parsed.role === "owner" || parsed.role === "buyer") return parsed;
+  } catch {
+    // Ignore.
+  }
   return null;
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(getStoredSession);
 
-  const login = ({ username, password }: LoginPayload): LoginResult => {
-    if (username !== SELLER_USERNAME) {
-      return { success: false, error: "username_wrong" };
-    }
-    if (password !== SELLER_PASSWORD) {
-      return { success: false, error: "password_wrong" };
-    }
-
-    const nextSession: AuthSession = {
-      sellerName: SELLER_USERNAME,
-      marketplace: "Panz Auto",
-    };
-    setSession(nextSession);
+  const persist = (s: AuthSession) => {
+    setSession(s);
     if (typeof window !== "undefined") {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextSession));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
     }
-    return { success: true };
   };
 
-  const logout = () => {
+  const loginAsOwner = useCallback((username: string, password: string): LoginResult => {
+    if (username !== OWNER_USERNAME || password !== OWNER_PASSWORD) {
+      return { success: false, error: "invalid" };
+    }
+    persist({ role: "owner", name: OWNER_USERNAME });
+    return { success: true };
+  }, []);
+
+  const loginWithGoogle = useCallback((credential: string) => {
+    const info = decodeGoogleJwt(credential);
+    persist({ role: "buyer", name: info.name, email: info.email, picture: info.picture });
+  }, []);
+
+  const logout = useCallback(() => {
     setSession(null);
     if (typeof window !== "undefined") {
       window.localStorage.removeItem(STORAGE_KEY);
     }
-  };
+  }, []);
 
-  const value = useMemo(
-    () => ({
-      session,
-      isAuthenticated: session !== null,
-      login,
-      logout,
-    }),
-    [session],
-  );
+  const value = useMemo(() => ({
+    session,
+    isAuthenticated: session !== null,
+    isOwner: session?.role === "owner",
+    isBuyer: session?.role === "buyer",
+    loginAsOwner,
+    loginWithGoogle,
+    logout,
+  }), [session, loginAsOwner, loginWithGoogle, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

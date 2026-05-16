@@ -8,7 +8,7 @@ import { useAuth } from "../../lib/auth";
 export function Header() {
   const { selectedLocale, setLocale, localeOptions, t } = useLanguage();
   const { itemCount, toggleCart } = useCart();
-  const { session, isAuthenticated, logout } = useAuth();
+  const { session, isAuthenticated, isOwner, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -107,11 +107,11 @@ export function Header() {
           {isAuthenticated && session ? (
             <>
               <Link
-                to="/dashboard"
+                to={isOwner ? "/dashboard" : "/"}
                 className="hidden md:flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
               >
                 <User className="h-4 w-4" aria-hidden="true" />
-                <span className="max-w-28 truncate">{session.sellerName}</span>
+                <span className="max-w-28 truncate">{session.name}</span>
               </Link>
               <button
                 type="button"
@@ -168,12 +168,12 @@ export function Header() {
             {isAuthenticated && session ? (
               <>
                 <Link
-                  to="/dashboard"
+                  to={isOwner ? "/dashboard" : "/"}
                   onClick={closeMobileMenu}
                   className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
                 >
                   <User className="h-4 w-4" aria-hidden="true" />
-                  <span>{session.sellerName}</span>
+                  <span>{session.name}</span>
                 </Link>
                 <button
                   type="button"
