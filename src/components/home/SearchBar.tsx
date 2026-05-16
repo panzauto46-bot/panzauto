@@ -13,14 +13,14 @@ import {
 const modelsData: Record<string, string[]> = {
   yamaha: [
     "Aerox 155", "NMAX 155", "XMAX 250", "TMAX", "Lexi", "FreeGo", "Gear 125", "Fazzio", "Grand Filano",
-    "Mio (Sporty/J/M3/Z/S)", "X-Ride", "Fino", "Nouvo", 
+    "Mio (Sporty/J/M3/Z/S)", "X-Ride", "Fino", "Nouvo",
     "R15", "R25", "MT-15", "MT-25", "Vixion (R/NVL/NVA)", "XSR 155", "Xabre", "RX-King", "Byson", "Scorpio Z",
     "WR 155 R", "Jupiter MX / MX King 150", "Jupiter Z / Z1", "Vega / Force"
   ],
   honda: [
-    "PCX (150/160)", "ADV (150/160)", "Forza 250", "Vario (110/125/150/160)", "Beat (Sporty/Street/Pop)", 
-    "Scoopy", "Genio", "Spacy", "CBR150R", "CBR250RR", "CB150R Streetfire", "CB150X", "CB150 Verza", 
-    "Megapro", "Tiger", "Sonic 150R", "Supra GTR 150", "Supra X 125", "Revo (Fit/X)", "Blade", 
+    "PCX (150/160)", "ADV (150/160)", "Forza 250", "Vario (110/125/150/160)", "Beat (Sporty/Street/Pop)",
+    "Scoopy", "Genio", "Spacy", "CBR150R", "CBR250RR", "CB150R Streetfire", "CB150X", "CB150 Verza",
+    "Megapro", "Tiger", "Sonic 150R", "Supra GTR 150", "Supra X 125", "Revo (Fit/X)", "Blade",
     "CRF150L", "CRF250 Rally", "Monkey", "ST125 Dax"
   ],
   kawasaki: [
@@ -107,24 +107,25 @@ export function SearchBar() {
   };
 
   return (
-    <div className="bg-white p-4 shadow-2xl md:p-6 border border-neutral-200">
+    <div className="bg-white p-4 shadow-2xl md:p-6 border border-neutral-200" role="search">
       <form
         className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,0.85fr)_minmax(0,0.9fr)_minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,1.2fr)_auto] md:gap-6 items-end"
         onSubmit={handleBuy}
+        aria-label="Search and buy velocity stack"
       >
         {/* Make */}
         <div className="flex flex-col gap-2">
           <label htmlFor="make" className="text-xs font-semibold uppercase tracking-wider text-black">
             {t("search.make")}
           </label>
-          <select 
-            id="make" 
+          <select
+            id="make"
             value={selectedMake}
             onChange={(e) => {
               setSelectedMake(e.target.value);
               setSelectedModel("");
             }}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anymake")}</option>
             <option value="yamaha">Yamaha</option>
@@ -139,12 +140,13 @@ export function SearchBar() {
           <label htmlFor="model" className="text-xs font-semibold uppercase tracking-wider text-black">
             {t("search.model")}
           </label>
-          <select 
-            id="model" 
+          <select
+            id="model"
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 disabled:opacity-50"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2 disabled:opacity-50"
             disabled={!selectedMake}
+            aria-describedby={!selectedMake ? "model-help" : undefined}
           >
             <option value="">{selectedMake ? t("search.anymodel") : t("search.selectfirst")}</option>
             {availableModels.map((model) => (
@@ -153,6 +155,11 @@ export function SearchBar() {
               </option>
             ))}
           </select>
+          {!selectedMake && (
+            <p id="model-help" className="text-xs text-neutral-500">
+              {t("search.selectfirst")}
+            </p>
+          )}
         </div>
 
         {/* Year */}
@@ -160,11 +167,11 @@ export function SearchBar() {
           <label htmlFor="year" className="text-xs font-semibold uppercase tracking-wider text-black">
             {t("search.year")}
           </label>
-          <select 
-            id="year" 
+          <select
+            id="year"
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anyyear")}</option>
             {yearsList.map(year => (
@@ -183,7 +190,7 @@ export function SearchBar() {
             id="color"
             value={selectedColor}
             onChange={(e) => setSelectedColor(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anycolor")}</option>
             {colorOptions.map((color) => (
@@ -203,7 +210,7 @@ export function SearchBar() {
             id="throttleBody"
             value={selectedThrottleBody}
             onChange={(e) => setSelectedThrottleBody(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anythrottlebody")}</option>
             {throttleBodyOptions.map((size) => (
@@ -223,7 +230,7 @@ export function SearchBar() {
             id="throttleBodySize"
             value={selectedThrottleBodySize}
             onChange={(e) => setSelectedThrottleBodySize(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anysize")}</option>
             {throttleBodySizeOptions.map((size) => (
@@ -243,7 +250,7 @@ export function SearchBar() {
             id="velocityStackHeight"
             value={selectedVelocityStackHeight}
             onChange={(e) => setSelectedVelocityStackHeight(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anyvelocityheight")}</option>
             {velocityStackHeightOptions.map((height) => (
@@ -256,11 +263,11 @@ export function SearchBar() {
 
         {/* Buy Button */}
         <div>
-          <button 
-            type="submit" 
-            className="flex w-full items-center justify-center gap-2 bg-black px-6 py-3 font-medium text-white hover:bg-neutral-800 transition-colors h-full"
+          <button
+            type="submit"
+            className="flex w-full items-center justify-center gap-2 bg-black px-6 py-3 font-medium text-white hover:bg-neutral-800 transition-colors h-full focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-5 w-5" aria-hidden="true" />
             <span>{t("search.button")}</span>
           </button>
         </div>
