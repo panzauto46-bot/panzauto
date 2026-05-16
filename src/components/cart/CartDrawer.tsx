@@ -5,7 +5,7 @@ import { useLanguage } from "../../lib/i18n";
 
 type Courier = "JNE" | "J&T" | "SiCepat";
 const SELLER_ADDRESS = "Perum Taman Walet Blok WRA7 No 18, Kel. Sindang Sari, Kec. Pasar Kemis, Kab. Tangerang, Indonesia.";
-const SELLER_WA = "628123456789"; // TO DO: Replace with actual WA number
+const SELLER_WA = "6285718336173";
 
 interface FormErrors {
   fullName?: string;
