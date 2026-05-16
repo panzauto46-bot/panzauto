@@ -4,6 +4,8 @@ import { ArrowLeft, Edit2, ImageIcon, Package, Plus, Trash2 } from "lucide-react
 import { useAuth } from "../../lib/auth";
 import { useLanguage } from "../../lib/i18n";
 import { Product, useProducts } from "../../lib/products";
+import { supabase } from "../../lib/supabase";
+import { Upload } from "lucide-react";
 
 type View = "list" | "form";
 
@@ -26,6 +28,7 @@ export function SellerDashboard() {
   const [form, setForm] = useState(emptyForm);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [imgError, setImgError] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   if (!session) return null;
 
@@ -37,6 +40,36 @@ export function SellerDashboard() {
 
   const setField = <K extends keyof typeof form>(key: K, val: typeof form[K]) =>
     setForm((prev) => ({ ...prev, [key]: val }));
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !supabase) return;
+
+    setIsUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage.from('product-images').getPublicUrl(filePath);
+      
+      setField("img", data.publicUrl);
+      setImgError(false);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert(isId ? 'Gagal mengupload gambar! Pastikan ukuran gambar tidak terlalu besar.' : 'Failed to upload image!');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleListChange = (key: "features" | "featuresId" | "compatible", idx: number, val: string) => {
     const arr = [...form[key]]; arr[idx] = val;
@@ -79,10 +112,19 @@ export function SellerDashboard() {
           </h1>
 
           <div className="space-y-6">
-            {/* Image URL + Preview */}
+            {/* Image Upload + Preview */}
             <div>
-              <label className={labelCls}>{isId ? "URL Gambar Produk" : "Product Image URL"}</label>
-              <input value={form.img} onChange={(e) => { setField("img", e.target.value); setImgError(false); }} placeholder="https://..." className={inputCls} />
+              <label className={labelCls}>{isId ? "Foto Produk" : "Product Image"}</label>
+              <div className="flex items-center gap-4">
+                <label className="cursor-pointer inline-flex items-center justify-center gap-2 border border-neutral-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-neutral-50 transition-colors">
+                  <Upload className="h-4 w-4" />
+                  <span>{isUploading ? (isId ? "Mengupload..." : "Uploading...") : (isId ? "Pilih Foto Baru" : "Upload New Photo")}</span>
+                  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={isUploading} />
+                </label>
+                <span className="text-xs text-neutral-500">atau paste URL di bawah</span>
+              </div>
+              <input value={form.img} onChange={(e) => { setField("img", e.target.value); setImgError(false); }} placeholder="https://..." className={inputCls + " mt-2"} />
+              
               {form.img && (
                 <div className="mt-3 relative aspect-video w-full max-w-xs overflow-hidden border border-neutral-200 bg-neutral-100">
                   {imgError ? (
