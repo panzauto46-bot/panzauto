@@ -15,7 +15,7 @@ export function Login() {
   const fromPath = useMemo(() => {
     const state = location.state as { from?: string } | null;
     if (!state?.from || state.from === "/login") {
-      return "/dashboard";
+      return "/";
     }
     return state.from;
   }, [location.state]);
@@ -41,22 +41,19 @@ export function Login() {
       return;
     }
 
-    navigate(fromPath, { replace: true });
+    navigate("/dashboard", { replace: true });
   };
 
   return (
     <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-7xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
       <div className="w-full max-w-md border border-neutral-200 bg-white p-6 sm:p-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500">
-          {isId ? "Akses Seller Dashboard" : "Seller Dashboard Access"}
-        </p>
-        <h1 className="mt-2 text-2xl font-bold text-black">
-          {isId ? "Masuk Sebagai Seller" : "Sign In as Seller"}
+        <h1 className="text-2xl font-bold text-black">
+          {isId ? "Masuk" : "Sign In"}
         </h1>
         <p className="mt-2 text-sm text-neutral-600">
           {isId
-            ? "Masukkan username dan password untuk mengakses dashboard."
-            : "Enter your username and password to access dashboard."}
+            ? "Masukkan username dan password kamu."
+            : "Enter your username and password."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -98,7 +95,7 @@ export function Login() {
             type="submit"
             className="w-full bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800"
           >
-            {isId ? "Masuk ke Dashboard" : "Enter Dashboard"}
+            {isId ? "Masuk" : "Sign In"}
           </button>
         </form>
 
