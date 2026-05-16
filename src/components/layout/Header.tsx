@@ -113,6 +113,14 @@ export function Header() {
                 <User className="h-4 w-4" aria-hidden="true" />
                 <span className="max-w-28 truncate">{session.name}</span>
               </Link>
+              {isBuyer && (
+                <Link
+                  to="/orders"
+                  className="hidden md:flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
+                >
+                  {isId ? "Pesanan Saya" : "My Orders"}
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={logout}
@@ -175,6 +183,15 @@ export function Header() {
                   <User className="h-4 w-4" aria-hidden="true" />
                   <span>{session.name}</span>
                 </Link>
+                {isBuyer && (
+                  <Link
+                    to="/orders"
+                    onClick={closeMobileMenu}
+                    className="mt-1 inline-flex items-center gap-2 text-sm font-medium text-black hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded px-2 py-1"
+                  >
+                    {isId ? "Pesanan Saya" : "My Orders"}
+                  </Link>
+                )}
                 <button
                   type="button"
                   onClick={() => {

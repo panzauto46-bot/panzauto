@@ -16,6 +16,7 @@ import { useLanguage } from "./lib/i18n";
 import { Login } from "./components/auth/Login";
 import { SellerDashboard } from "./components/dashboard/SellerDashboard";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { OrderHistory } from "./components/user/OrderHistory";
 import { useProducts } from "./lib/products";
 
 export default function App() {
@@ -77,6 +78,7 @@ export default function App() {
           />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/orders" element={<OrderHistory />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<SellerDashboard />} />
           </Route>

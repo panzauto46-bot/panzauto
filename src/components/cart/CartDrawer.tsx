@@ -2,6 +2,8 @@ import { CheckCircle2, CreditCard, Trash2, X, AlertCircle } from "lucide-react";
 import { FormEvent, useState, useEffect, useRef } from "react";
 import { useCart } from "../../lib/cart";
 import { useLanguage } from "../../lib/i18n";
+import { useAuth } from "../../lib/auth";
+import { supabase } from "../../lib/supabase";
 
 type Courier = "JNE" | "J&T" | "SiCepat";
 const SELLER_ADDRESS = "Perum Taman Walet Blok WRA7 No 18, Kel. Sindang Sari, Kec. Pasar Kemis, Kab. Tangerang, Indonesia.";
@@ -16,6 +18,7 @@ interface FormErrors {
 export function CartDrawer() {
   const { t, formatCurrency } = useLanguage();
   const { isCartOpen, closeCart, items, subtotal, removeFromCart, clearCart } = useCart();
+  const { session } = useAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
@@ -96,7 +99,7 @@ export function CartDrawer() {
     return null;
   }
 
-  const handleCheckoutSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleCheckoutSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -108,6 +111,7 @@ export function CartDrawer() {
     }
 
     setFormErrors({});
+    setIsPaying(true);
     const fullName = formData.get("fullName") as string;
     const phone = formData.get("phone") as string;
     const address = formData.get("address") as string;
@@ -131,6 +135,26 @@ Kurir Pilihan: ${selectedCourier}
 Mohon bantu cek total beserta ongkos kirimnya dari Tangerang ya. Terima kasih!`;
 
     const waLink = `https://wa.me/${SELLER_WA}?text=${encodeURIComponent(message)}`;
+    
+    // Save order to Supabase
+    if (session && (session as any).email && supabase) {
+      try {
+        await supabase.from("orders").insert({
+          buyer_email: (session as any).email,
+          buyer_name: fullName,
+          buyer_phone: phone,
+          shipping_address: address,
+          courier: selectedCourier,
+          total_amount: subtotal,
+          items: items,
+          status: "Menunggu Pembayaran",
+        });
+      } catch (err) {
+        console.error("Gagal menyimpan order ke database", err);
+      }
+    }
+    
+    setIsPaying(false);
     window.open(waLink, "_blank");
 
     clearCart();
