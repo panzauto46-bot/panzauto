@@ -6,8 +6,7 @@ interface AuthSession {
 }
 
 interface LoginPayload {
-  sellerName: string;
-  marketplace: string;
+  username: string;
   password: string;
 }
 
@@ -26,11 +25,10 @@ interface AuthContextType {
 const STORAGE_KEY = "panz-auto-auth";
 
 /**
- * Seller PIN / password.
- * Ganti PIN ini sesuai keinginan kamu.
- * Hanya yang tahu PIN ini yang bisa masuk ke Seller Dashboard.
+ * Kredensial seller — hanya pemilik toko yang tahu.
  */
-const SELLER_PIN = "panzauto2024";
+const SELLER_USERNAME = "panzauto46";
+const SELLER_PASSWORD = "Pandudarma14";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -67,14 +65,17 @@ const getStoredSession = (): AuthSession | null => {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(getStoredSession);
 
-  const login = ({ sellerName, marketplace, password }: LoginPayload): LoginResult => {
-    if (password !== SELLER_PIN) {
+  const login = ({ username, password }: LoginPayload): LoginResult => {
+    if (username !== SELLER_USERNAME) {
+      return { success: false, error: "username_wrong" };
+    }
+    if (password !== SELLER_PASSWORD) {
       return { success: false, error: "password_wrong" };
     }
 
-    const nextSession = {
-      sellerName: sellerName.trim(),
-      marketplace: marketplace.trim(),
+    const nextSession: AuthSession = {
+      sellerName: SELLER_USERNAME,
+      marketplace: "Panz Auto",
     };
     setSession(nextSession);
     if (typeof window !== "undefined") {

@@ -3,15 +3,12 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../lib/auth";
 import { useLanguage } from "../../lib/i18n";
 
-const marketplaces = ["Shopee", "Tokopedia", "TikTok Shop", "Lazada", "Bukalapak"] as const;
-
 export function Login() {
   const { language } = useLanguage();
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [sellerName, setSellerName] = useState("");
-  const [marketplace, setMarketplace] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -32,28 +29,15 @@ export function Login() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const trimmedSeller = sellerName.trim();
-    if (!trimmedSeller || !marketplace || !password.trim()) {
-      setError(
-        isId
-          ? "Seller, marketplace, dan password wajib diisi."
-          : "Seller, marketplace, and password are required.",
-      );
+    if (!username.trim() || !password.trim()) {
+      setError(isId ? "Username dan password wajib diisi." : "Username and password are required.");
       return;
     }
 
-    const result = login({
-      sellerName: trimmedSeller,
-      marketplace,
-      password: password.trim(),
-    });
+    const result = login({ username: username.trim(), password: password.trim() });
 
     if (!result.success) {
-      setError(
-        isId
-          ? "Password salah. Hubungi admin jika lupa password."
-          : "Wrong password. Contact admin if you forgot your password.",
-      );
+      setError(isId ? "Username atau password salah." : "Wrong username or password.");
       return;
     }
 
@@ -71,43 +55,24 @@ export function Login() {
         </h1>
         <p className="mt-2 text-sm text-neutral-600">
           {isId
-            ? "Masukkan akun seller dan password untuk mengakses dashboard."
-            : "Enter your seller account and password to access dashboard."}
+            ? "Masukkan username dan password untuk mengakses dashboard."
+            : "Enter your username and password to access dashboard."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label htmlFor="seller-name" className="mb-1 block text-sm font-medium text-black">
-              {isId ? "Nama Seller" : "Seller Name"}
+            <label htmlFor="username" className="mb-1 block text-sm font-medium text-black">
+              Username
             </label>
             <input
-              id="seller-name"
+              id="username"
               type="text"
-              value={sellerName}
-              onChange={(event) => setSellerName(event.target.value)}
-              placeholder={isId ? "Contoh: panzauto_official" : "Example: panzauto_official"}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
               className="w-full border border-neutral-300 px-3 py-2 text-sm text-black outline-none transition focus:border-black"
               autoComplete="username"
             />
-          </div>
-
-          <div>
-            <label htmlFor="marketplace" className="mb-1 block text-sm font-medium text-black">
-              Marketplace
-            </label>
-            <select
-              id="marketplace"
-              value={marketplace}
-              onChange={(event) => setMarketplace(event.target.value)}
-              className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm text-black outline-none transition focus:border-black"
-            >
-              <option value="">{isId ? "Pilih marketplace" : "Select marketplace"}</option>
-              {marketplaces.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div>
@@ -118,8 +83,8 @@ export function Login() {
               id="password"
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder={isId ? "Masukkan password seller" : "Enter seller password"}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
               className="w-full border border-neutral-300 px-3 py-2 text-sm text-black outline-none transition focus:border-black"
               autoComplete="current-password"
             />
