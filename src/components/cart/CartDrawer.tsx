@@ -3,12 +3,9 @@ import { FormEvent, useState, useEffect, useRef } from "react";
 import { useCart } from "../../lib/cart";
 import { useLanguage } from "../../lib/i18n";
 
-type PaymentMethod = "transfer" | "ewallet";
-const bankTransferAccount = {
-  bank: "BRI",
-  accountNumber: "7369-01-028321-53-0",
-  accountHolder: "Pandu Darma Anugrah",
-};
+type Courier = "JNE" | "J&T" | "SiCepat";
+const SELLER_ADDRESS = "Perum Taman Walet Blok WRA7 No 18, Kel. Sindang Sari, Kec. Pasar Kemis, Kab. Tangerang, Indonesia.";
+const SELLER_WA = "628123456789"; // TO DO: Replace with actual WA number
 
 interface FormErrors {
   fullName?: string;
@@ -22,7 +19,7 @@ export function CartDrawer() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("transfer");
+  const [courier, setCourier] = useState<Courier>("JNE");
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -111,13 +108,33 @@ export function CartDrawer() {
     }
 
     setFormErrors({});
-    setIsPaying(true);
+    const fullName = formData.get("fullName") as string;
+    const phone = formData.get("phone") as string;
+    const address = formData.get("address") as string;
+    const selectedCourier = formData.get("courier") as string;
 
-    setTimeout(() => {
-      setIsPaying(false);
-      setIsPaymentSuccess(true);
-      clearCart();
-    }, 900);
+    const itemsList = items.map(i => `- ${i.title} (${i.color}, ${i.throttleBodySize}, ${i.velocityStackHeight}) : ${formatCurrency(i.price)}`).join("\n");
+    
+    const message = `Halo Panz Auto! Saya mau order barang ini:
+
+*Daftar Pesanan:*
+${itemsList}
+
+*Subtotal Barang:* ${formatCurrency(subtotal)}
+
+*Data Penerima:*
+Nama: ${fullName}
+No HP: ${phone}
+Alamat: ${address}
+Kurir Pilihan: ${selectedCourier}
+
+Mohon bantu cek total beserta ongkos kirimnya dari Tangerang ya. Terima kasih!`;
+
+    const waLink = `https://wa.me/${SELLER_WA}?text=${encodeURIComponent(message)}`;
+    window.open(waLink, "_blank");
+
+    clearCart();
+    handleClose();
   };
 
   const handleClose = () => {
@@ -125,7 +142,7 @@ export function CartDrawer() {
     setIsCheckingOut(false);
     setIsPaymentSuccess(false);
     setIsPaying(false);
-    setPaymentMethod("transfer");
+    setCourier("JNE");
     setFormErrors({});
   };
 
@@ -278,47 +295,35 @@ export function CartDrawer() {
                   </div>
 
                   <div>
-                    <label htmlFor="paymentMethod" className="block text-xs font-semibold uppercase tracking-wider text-black">
-                      {t("cart.formMethod")}
+                    <label htmlFor="courier" className="block text-xs font-semibold uppercase tracking-wider text-black mb-1">
+                      Pilihan Ekspedisi
                     </label>
                     <select
-                      id="paymentMethod"
-                      value={paymentMethod}
-                      onChange={(event) => setPaymentMethod(event.target.value as PaymentMethod)}
+                      id="courier"
+                      name="courier"
+                      value={courier}
+                      onChange={(event) => setCourier(event.target.value as Courier)}
                       className="w-full border border-neutral-300 px-3 py-2 text-sm focus:border-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
                     >
-                      <option value="transfer">{t("cart.methodTransfer")}</option>
-                      <option value="ewallet">{t("cart.methodEwallet")}</option>
+                      <option value="JNE">JNE</option>
+                      <option value="J&T">J&T</option>
+                      <option value="SiCepat">SiCepat</option>
                     </select>
                   </div>
 
-                  {paymentMethod === "transfer" && (
-                    <div className="rounded-md border border-neutral-300 bg-neutral-50 p-3" role="region" aria-label="Bank transfer information">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                        {t("cart.transferTo")}
-                      </p>
-                      <p className="mt-2 text-sm text-black">
-                        <span className="font-medium">{t("cart.bankName")}:</span> {bankTransferAccount.bank}
-                      </p>
-                      <p className="mt-1 text-sm text-black">
-                        <span className="font-medium">{t("cart.accountNumber")}:</span>{" "}
-                        <span className="font-mono">{bankTransferAccount.accountNumber}</span>
-                      </p>
-                      <p className="mt-1 text-sm text-black">
-                        <span className="font-medium">{t("cart.accountHolder")}:</span>{" "}
-                        {bankTransferAccount.accountHolder}
-                      </p>
-                      <p className="mt-2 text-xs text-neutral-600">{t("cart.transferNote")}</p>
-                    </div>
-                  )}
+                  <div className="rounded-md border border-neutral-300 bg-neutral-50 p-3" role="region">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                      Dikirim Dari:
+                    </p>
+                    <p className="text-sm text-black font-medium">Panz Auto</p>
+                    <p className="text-xs text-neutral-600 mt-1">{SELLER_ADDRESS}</p>
+                  </div>
 
                   <button
                     type="submit"
-                    disabled={isPaying}
-                    className="inline-flex w-full items-center justify-center gap-2 bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
+                    className="inline-flex w-full items-center justify-center gap-2 bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#128C7E] transition-colors focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 rounded mt-2"
                   >
-                    <CreditCard className="h-4 w-4" aria-hidden="true" />
-                    <span>{isPaying ? t("cart.processing") : t("cart.payNow")}</span>
+                    <span>Kirim Pesanan via WhatsApp</span>
                   </button>
                 </form>
               )}
