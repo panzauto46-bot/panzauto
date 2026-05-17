@@ -208,6 +208,37 @@ export const defaultProducts: Product[] = [
     reviews: 12,
     isNew: false,
   },
+  {
+    id: 5,
+    name: "Velocity Stack ZX25R / POWER STACK ZX25R",
+    nameId: "Velocity Stack ZX25R / POWER STACK ZX25R",
+    diameter: "Custom ZX25R",
+    height: "Custom Set",
+    finish: "Blue Anodize",
+    finishId: "Anodize Biru",
+    priceIdr: 450000,
+    img: "/images/zx25r-power.jpg",
+    description: "High performance velocity stack set specially designed for Kawasaki ZX-25R. 4-cylinder configuration for maximum top-end power.",
+    descriptionId: "Set velocity stack performa tinggi khusus dirancang untuk Kawasaki ZX-25R. Konfigurasi 4-silinder untuk memaksimalkan tenaga di putaran atas.",
+    features: [
+      "Designed specifically for Kawasaki ZX-25R 4-cylinder throttle body",
+      "Full 4-piece set included",
+      "Premium blue finish",
+      "Optimized for high RPM horsepower",
+      "Plug and play installation",
+    ],
+    featuresId: [
+      "Dirancang khusus untuk throttle body 4-silinder Kawasaki ZX-25R",
+      "Sudah termasuk 1 set lengkap (4 buah)",
+      "Finishing biru premium yang elegan",
+      "Dioptimalkan untuk meningkatkan tenaga (horsepower) di RPM tinggi",
+      "Pemasangan mudah (Plug and play)",
+    ],
+    compatible: ["Kawasaki ZX-25R", "Kawasaki ZX-4RR"],
+    rating: 5.0,
+    reviews: 8,
+    isNew: true,
+  },
 ];
 
 interface ProductContextType {
