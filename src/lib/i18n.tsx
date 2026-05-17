@@ -58,7 +58,7 @@ export const translations = {
     "search.older": "1999 & Older",
     "search.button": "Buy",
     // Featured
-    "feat.title": "Custom Velocity Stack",
+    "feat.title": "Velocity Stack Models",
     "feat.viewall": "View All Sizes",
     "feat.new": "NEW",
     "feat.diameter": "Diameter",
@@ -146,7 +146,7 @@ export const translations = {
     "search.older": "1999 & Kebawah",
     "search.button": "Beli",
     // Featured
-    "feat.title": "Custom Velo Pilihan",
+    "feat.title": "Model Velocity Stack",
     "feat.viewall": "Lihat Semua Ukuran",
     "feat.new": "BARU",
     "feat.diameter": "Diameter",
