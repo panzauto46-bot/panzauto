@@ -108,8 +108,6 @@ export function ProductDetail() {
               </div>
             </div>
 
-            <div className="text-3xl font-bold text-black">{formatCurrency(product.priceIdr)}</div>
-
             <p className="text-base text-neutral-600">{isId ? product.descriptionId : product.description}</p>
 
             <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-6">

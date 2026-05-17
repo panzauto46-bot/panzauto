@@ -72,7 +72,6 @@ export default function App() {
                           </p>
                           <div className="mt-3 flex items-center justify-between text-sm border-t border-neutral-800 pt-3">
                             <span className="text-neutral-400 font-mono uppercase">{t("feat.finish")}: {isId ? product.finishId : product.finish}</span>
-                            <span className="font-bold text-white font-mono">{formatCurrency(product.priceIdr)}</span>
                           </div>
                         </div>
                       </Link>
