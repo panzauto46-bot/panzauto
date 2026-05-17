@@ -55,6 +55,8 @@ export const translations = {
     "search.anysize": "Any Size",
     "search.velocityheight": "Velocity Stack Height",
     "search.anyvelocityheight": "Any Height",
+    "search.modelvelo": "Velo Model",
+    "search.anymodelvelo": "Any Velo Model",
     "search.older": "1999 & Older",
     "search.button": "Buy",
     // Featured
@@ -143,6 +145,8 @@ export const translations = {
     "search.anysize": "Semua Ukuran",
     "search.velocityheight": "Tinggi Velocity Stack",
     "search.anyvelocityheight": "Semua Tinggi",
+    "search.modelvelo": "Model Velo",
+    "search.anymodelvelo": "Semua Model Velo",
     "search.older": "1999 & Kebawah",
     "search.button": "Beli",
     // Featured

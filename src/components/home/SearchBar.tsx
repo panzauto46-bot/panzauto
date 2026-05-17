@@ -50,6 +50,7 @@ export function SearchBar() {
   const [selectedThrottleBody, setSelectedThrottleBody] = useState<string>("");
   const [selectedThrottleBodySize, setSelectedThrottleBodySize] = useState<string>("");
   const [selectedVelocityStackHeight, setSelectedVelocityStackHeight] = useState<string>("");
+  const [selectedModelVelo, setSelectedModelVelo] = useState<string>("");
   const { addToCart, openCart } = useCart();
   const { t } = useLanguage();
 
@@ -67,6 +68,7 @@ export function SearchBar() {
       throttleBody: selectedThrottleBody,
       throttleBodySize: selectedThrottleBodySize,
       velocityStackHeight: selectedVelocityStackHeight,
+      modelVelo: selectedModelVelo,
     };
 
     Object.entries(values).forEach(([key, value]) => {
@@ -88,9 +90,10 @@ export function SearchBar() {
     const throttleBodyLabel = selectedThrottleBody || "Standar / OEM";
     const throttleBodySizeLabel = selectedThrottleBodySize || t("search.anysize");
     const velocityStackHeightLabel = selectedVelocityStackHeight || "40 mm";
+    const modelVeloLabel = selectedModelVelo || "Model Panz";
 
     addToCart({
-      title: `${makeLabel} ${modelLabel}`,
+      title: `${makeLabel} ${modelLabel} - ${modelVeloLabel}`,
       make: makeLabel,
       model: modelLabel,
       year: yearLabel,
@@ -261,8 +264,28 @@ export function SearchBar() {
           </select>
         </div>
 
+        {/* Model Velo */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="modelVelo" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
+            {t("search.modelvelo")}
+          </label>
+          <select
+            id="modelVelo"
+            value={selectedModelVelo}
+            onChange={(e) => setSelectedModelVelo(e.target.value)}
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
+          >
+            <option value="">{t("search.anymodelvelo")}</option>
+            {["Panz", "REV", "PZ", "ELON GATED", "2 Stage"].map((mv) => (
+              <option key={mv} value={mv}>
+                {mv}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Buy Button */}
-        <div>
+        <div className="md:col-span-2 lg:col-span-4 mt-2">
           <button
             type="submit"
             className="flex w-full items-center justify-center gap-2 bg-white px-6 py-3 font-medium text-black hover:bg-neutral-200 transition-colors h-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-950 rounded-lg"
