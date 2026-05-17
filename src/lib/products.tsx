@@ -120,6 +120,42 @@ export const defaultProducts: Product[] = [
     isNew: true,
     gallery: ["/images/zx25r-power.jpg", "/images/zx25r-power-2.jpg", "/images/zx25r-power-3.jpg"],
   },
+  {
+    id: 6,
+    name: "Velo Model Panz",
+    nameId: "Velo Model Panz",
+    diameter: "Custom",
+    height: "Custom",
+    finish: "Anodize",
+    finishId: "Anodize",
+    priceIdr: 500000,
+    img: "/images/panz-3.webp",
+    description: "Premium velocity stack 'Velo Model Panz' series. Engineered for ultimate flow and aesthetics.",
+    descriptionId: "Velocity stack premium seri 'Velo Model Panz'. Dirancang khusus untuk aliran udara dan estetika yang maksimal.",
+    features: [
+      "Exclusive Panz Auto design",
+      "Optimized flow dynamics",
+      "Premium construction",
+      "Perfect fitment",
+    ],
+    featuresId: [
+      "Desain eksklusif Panz Auto",
+      "Dinamika aliran udara yang dioptimalkan",
+      "Konstruksi premium yang kuat",
+      "Pemasangan presisi",
+    ],
+    compatible: ["Universal Custom"],
+    rating: 5.0,
+    reviews: 0,
+    isNew: true,
+    gallery: [
+      "/images/panz-3.webp",
+      "/images/panz-1.webp",
+      "/images/panz-2.webp",
+      "/images/panz-4.webp",
+      "/images/panz-5.webp"
+    ],
+  },
 ];
 
 interface ProductContextType {
