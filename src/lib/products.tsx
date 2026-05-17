@@ -125,7 +125,7 @@ export const defaultProducts: Product[] = [
     name: "Velo Model Panz",
     nameId: "Velo Model Panz",
     diameter: "Custom",
-    height: "Custom",
+    height: "40mm, 55mm, 75mm, 95mm",
     finish: "Anodize",
     finishId: "Anodize",
     priceIdr: 500000,
