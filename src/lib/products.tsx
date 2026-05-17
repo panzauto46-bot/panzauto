@@ -92,7 +92,7 @@ export const defaultProducts: Product[] = [
     height: "Custom Set",
     finish: "Blue Anodize",
     finishId: "Anodize Biru",
-    priceIdr: 450000,
+    priceIdr: 2000000,
     img: "/images/zx25r-power.jpg",
     description: "High performance velocity stack set specially designed for Kawasaki ZX-25R. 4-cylinder configuration for maximum top-end power.",
     descriptionId: "Set velocity stack performa tinggi khusus dirancang untuk Kawasaki ZX-25R. Konfigurasi 4-silinder untuk memaksimalkan tenaga di putaran atas.",
