@@ -156,6 +156,40 @@ export const defaultProducts: Product[] = [
       "/images/panz-5.webp"
     ],
   },
+  {
+    id: 7,
+    name: "Velo Model REV",
+    nameId: "Velo Model REV",
+    diameter: "Custom",
+    height: "Custom",
+    finish: "Anodize",
+    finishId: "Anodize",
+    priceIdr: 500000,
+    img: "/images/rev-1.webp",
+    description: "Premium velocity stack 'Velo Model REV' series. Designed for peak racing performance.",
+    descriptionId: "Velocity stack premium seri 'Velo Model REV'. Dirancang khusus untuk performa balap maksimal.",
+    features: [
+      "Exclusive REV design",
+      "Optimized flow dynamics",
+      "Premium construction",
+      "Perfect fitment",
+    ],
+    featuresId: [
+      "Desain eksklusif REV",
+      "Dinamika aliran udara yang dioptimalkan",
+      "Konstruksi premium yang kuat",
+      "Pemasangan presisi",
+    ],
+    compatible: ["Universal Custom"],
+    rating: 5.0,
+    reviews: 0,
+    isNew: true,
+    gallery: [
+      "/images/rev-1.webp",
+      "/images/rev-2.webp",
+      "/images/rev-3.webp"
+    ],
+  },
 ];
 
 interface ProductContextType {
