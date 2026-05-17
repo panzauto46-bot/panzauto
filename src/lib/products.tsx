@@ -19,6 +19,7 @@ export interface Product {
   rating: number;
   reviews: number;
   isNew: boolean;
+  gallery?: string[];
 }
 
 /** Supabase row shape (snake_case) */
@@ -40,6 +41,7 @@ interface ProductRow {
   rating: number;
   reviews: number;
   is_new: boolean;
+  gallery?: string[];
 }
 
 // --- Converters ---
@@ -61,6 +63,7 @@ const rowToProduct = (r: ProductRow): Product => ({
   rating: r.rating,
   reviews: r.reviews,
   isNew: r.is_new,
+  gallery: r.gallery ?? [],
 });
 
 const productToRow = (p: Omit<Product, "id">): Omit<ProductRow, "id"> => ({
@@ -80,6 +83,7 @@ const productToRow = (p: Omit<Product, "id">): Omit<ProductRow, "id"> => ({
   rating: p.rating,
   reviews: p.reviews,
   is_new: p.isNew,
+  gallery: p.gallery,
 });
 
 // --- Default products (fallback if no Supabase or empty table) ---
@@ -114,6 +118,7 @@ export const defaultProducts: Product[] = [
     rating: 5.0,
     reviews: 8,
     isNew: true,
+    gallery: ["/images/zx25r-power.jpg", "/images/zx25r-power-2.jpg", "/images/zx25r-power-3.jpg"],
   },
 ];
 

@@ -12,9 +12,11 @@ export function ProductDetail() {
   const { t, formatCurrency, language } = useLanguage();
   const { products } = useProducts();
   const [isLoading, setIsLoading] = useState(true);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
+    setActiveImage(null);
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, [id]);
@@ -76,6 +78,9 @@ export function ProductDetail() {
   );
   const waLink = `https://wa.me/${waNumber}?text=${waMessage}`;
 
+  const displayImage = activeImage || product.img;
+  const allImages = [product.img, ...(product.gallery || [])].filter((v, i, a) => a.indexOf(v) === i);
+
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -88,9 +93,25 @@ export function ProductDetail() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-4">
-            <div className="aspect-square w-full overflow-hidden bg-neutral-100">
-              <img src={product.img} alt={isId ? product.nameId : product.name} className="h-full w-full object-cover" loading="eager" />
+            <div className="aspect-square w-full overflow-hidden bg-neutral-100 rounded-lg">
+              <img src={displayImage} alt={isId ? product.nameId : product.name} className="h-full w-full object-cover" loading="eager" />
             </div>
+            {allImages.length > 1 && (
+              <div className="grid grid-cols-4 gap-4">
+                {allImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveImage(img)}
+                    className={`aspect-square w-full overflow-hidden rounded-md border-2 transition-all ${
+                      displayImage === img ? "border-black" : "border-transparent hover:border-neutral-300"
+                    }`}
+                  >
+                    <img src={img} alt={`${product.name} gallery image ${idx + 1}`} className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="space-y-6">
