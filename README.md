@@ -1,6 +1,6 @@
 # Panz Auto
 
-Minimalist monochrome motorcycle marketplace landing page built with React, TypeScript, Vite, and Tailwind CSS.
+Motorcycle velocity stack storefront built with React, TypeScript, Vite, and Tailwind CSS. The app is frontend-first, with Supabase used for shared product data and buyer order history.
 
 ## Tech Stack
 
@@ -16,9 +16,13 @@ Minimalist monochrome motorcycle marketplace landing page built with React, Type
 
 1. Install dependencies:
    `npm install`
-2. Start dev server:
+2. Configure environment variables in `.env`:
+   - `VITE_GOOGLE_CLIENT_ID`
+   - `VITE_OWNER_EMAILS` for owner dashboard access
+   - `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` if you want shared products and orders
+3. Start dev server:
    `npm run dev`
-3. Open:
+4. Open:
    `http://localhost:3000`
 
 ## Available Scripts
@@ -27,24 +31,27 @@ Minimalist monochrome motorcycle marketplace landing page built with React, Type
 - `npm run build` - build production bundle
 - `npm run preview` - preview production build locally
 - `npm run lint` - TypeScript type-check (`tsc --noEmit`)
+- `npm test` - run unit tests (`.test.ts` and `.test.tsx`)
 - `npm run clean` - remove `dist` folder
 
 ## Notes
 
-- Current app is frontend-only (no backend/API integration yet).
+- The catalog works without Supabase by falling back to the default in-memory product list.
 - Search form stores selected filters in URL query params and scrolls to featured listings.
 - Language toggle supports Indonesian (`id`) and English (`en`).
+- Owner access is determined by Google Sign-In email allowlist via `VITE_OWNER_EMAILS`.
 
 ## Current Features (As of May 2026)
-- **Two-Tiered Authentication**: 
-  - Buyers use Google Sign-In (GSI).
-  - Owner uses a hidden manual login (`panzauto46`).
+- **Google Sign-In Authentication**:
+  - Buyers sign in with Google.
+  - Owners use the same Google flow and are promoted by email allowlist.
 - **Seller Dashboard**: Secure dashboard to manage products (CRUD). Hidden from normal users.
 - **Supabase Integration**: Products are persisted online and synced across all visitors.
-- **WhatsApp Checkout**: Buyers can fill out their shipping details (Name, Phone, Address, Courier) in the cart and send a formatted invoice directly to the seller's WhatsApp.
+- **WhatsApp Checkout**: Buyers can fill out shipping details (Name, Phone, Address, Courier), save the order to Supabase, and open a prefilled WhatsApp order chat.
+- **Buyer Order History**: Signed-in buyers can open "Pesanan Saya" / "My Orders" to review previous orders from Supabase.
 
 ## Future PR (Pekerjaan Rumah) / Next Steps
-1. **Order History for Buyers**: Create a dedicated "Pesanan Saya" (My Orders) page for logged-in buyers so they can see their past transactions (requires new `orders` table in Supabase).
-2. **Social Media & Footer Polish**: Expand the footer to include links to official Panz Auto social media (Instagram, TikTok) and marketplace shops (Shopee, Tokopedia).
-3. **Automated Shipping Calculation**: Integrate with a third-party API (like RajaOngkir or Biteship) to automatically calculate exact shipping costs based on the buyer's address and chosen courier.
-4. **Automated Payment Gateway**: Integrate Midtrans or Stripe for automatic payment verification (Virtual Account, QRIS, e-wallet) instead of manual WhatsApp transfers.
+1. **Supabase Auth + RLS**: Move buyer and owner authentication fully to Supabase Auth and lock data access with Row Level Security.
+2. **Shipping Calculation**: Integrate RajaOngkir or Biteship to estimate shipping before the WhatsApp handoff.
+3. **Payment Confirmation Flow**: Replace the current manual payment messaging with a clearer payment confirmation or gateway flow.
+4. **Social Media & Footer Polish**: Add official social and marketplace links (Instagram, TikTok, Shopee, Tokopedia).

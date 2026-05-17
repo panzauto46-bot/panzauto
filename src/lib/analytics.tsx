@@ -1,12 +1,16 @@
 import { useEffect } from "react";
+import { publicEnv } from "./env";
+
+type Gtag = (...args: unknown[]) => void;
 
 declare global {
   interface Window {
-    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[][];
+    gtag?: Gtag;
   }
 }
 
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
+const GA_MEASUREMENT_ID = publicEnv.VITE_GA_MEASUREMENT_ID?.trim() ?? "";
 
 export function GoogleAnalytics() {
   useEffect(() => {
@@ -19,9 +23,10 @@ export function GoogleAnalytics() {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
     document.head.appendChild(script);
 
-    window.gtag = window.gtag || function () {
-      (window.gtag = window.gtag || []).push(arguments);
-    };
+    window.dataLayer = window.dataLayer ?? [];
+    window.gtag = window.gtag ?? ((...args: unknown[]) => {
+      window.dataLayer?.push(args);
+    });
 
     window.gtag("js", new Date());
     window.gtag("config", GA_MEASUREMENT_ID);

@@ -3,50 +3,37 @@ import { describe, it } from "node:test";
 import { render, screen } from "@testing-library/react";
 import assert from "node:assert";
 import { ProductDetail } from "./ProductDetail";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "../../lib/cart";
 import { LanguageProvider } from "../../lib/i18n";
+import { ProductProvider } from "../../lib/products";
 
 describe("ProductDetail", () => {
-  it("should render product details", () => {
+  const renderProductDetail = (path: string) =>
     render(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={[path]}>
         <CartProvider>
           <LanguageProvider>
-            <Routes>
-              <Route path="/product/:id" element={<ProductDetail />} />
-            </Routes>
+            <ProductProvider>
+              <Routes>
+                <Route path="/product/:id" element={<ProductDetail />} />
+              </Routes>
+            </ProductProvider>
           </LanguageProvider>
         </CartProvider>
-      </BrowserRouter>,
+      </MemoryRouter>,
       {
         container: document.body.appendChild(document.createElement("div")),
-      }
+      },
     );
 
-    window.history.pushState({}, "", "/product/1");
-
-    assert.ok(screen.getByText(/Custom Velo/i));
+  it("should render product details", async () => {
+    renderProductDetail("/product/1");
+    assert.ok(await screen.findByText(/Custom Velo/i));
   });
 
-  it("should show not found for invalid product id", () => {
-    render(
-      <BrowserRouter>
-        <CartProvider>
-          <LanguageProvider>
-            <Routes>
-              <Route path="/product/:id" element={<ProductDetail />} />
-            </Routes>
-          </LanguageProvider>
-        </CartProvider>
-      </BrowserRouter>,
-      {
-        container: document.body.appendChild(document.createElement("div")),
-      }
-    );
-
-    window.history.pushState({}, "", "/product/999");
-
-    assert.ok(screen.getByText(/Product Not Found/i));
+  it("should show not found for invalid product id", async () => {
+    renderProductDetail("/product/999");
+    assert.ok(await screen.findByText(/Product Not Found/i));
   });
 });

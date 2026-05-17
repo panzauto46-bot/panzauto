@@ -27,7 +27,7 @@ export function SellerDashboard() {
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [imgError, setImgError] = useState(false);
 
-  if (!session) return null;
+  if (!session || session.role !== "owner") return null;
 
   const openAdd = () => { setForm(emptyForm); setEditId(null); setView("form"); setImgError(false); };
   const openEdit = (p: Product) => {
@@ -210,10 +210,10 @@ export function SellerDashboard() {
             </p>
             <h1 className="mt-1 text-2xl font-bold text-black">
               {isId ? "Selamat datang," : "Welcome,"}{" "}
-              <span className="underline underline-offset-4">{session.sellerName}</span>
+              <span className="underline underline-offset-4">{session.name}</span>
             </h1>
             <p className="mt-1 text-sm text-neutral-600">
-              Marketplace: <span className="font-semibold">{session.marketplace}</span>
+              {isId ? "Owner Email" : "Owner Email"}: <span className="font-semibold">{session.email}</span>
             </p>
           </div>
           <button type="button" onClick={handleLogout} className={btnSecondary}>

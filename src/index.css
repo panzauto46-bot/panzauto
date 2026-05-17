@@ -1,20 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
+  --color-neutral-950: #0a0a0a;
   --color-neutral-900: #111111;
-  --color-neutral-800: #222222;
+  --color-neutral-800: #1a1a1a;
+  --color-neutral-700: #262626;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-300: #d4d4d4;
   --color-neutral-100: #f5f5f5;
-  --color-neutral-50: #fafafa;
+  --color-accent: #00ff88; /* A subtle neon accent could be cool, but chrome is also nice */
+  
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Oswald', ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #ffffff;
-  color: var(--color-neutral-900);
+  background-color: var(--color-neutral-950);
+  color: var(--color-neutral-100);
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Custom Webflow-style smooth selection */
+::selection {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-950);
+}
+
+/* Base heading overrides */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
 }

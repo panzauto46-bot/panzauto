@@ -1,10 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
+import { publicEnv } from "./env";
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_URL = publicEnv.VITE_SUPABASE_URL?.trim() ?? "";
+const SUPABASE_ANON_KEY = publicEnv.VITE_SUPABASE_ANON_KEY?.trim() ?? "";
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn("Supabase credentials not configured. Product data will use localStorage fallback.");
+  console.warn("Supabase credentials not configured. Product data will use the default in-memory catalog.");
 }
 
 export const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY)

@@ -107,7 +107,7 @@ export function SearchBar() {
   };
 
   return (
-    <div className="bg-white p-4 shadow-2xl md:p-6 border border-neutral-200" role="search">
+    <div className="bg-transparent p-4 md:p-6 w-full" role="search">
       <form
         className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,0.85fr)_minmax(0,0.9fr)_minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,1.2fr)_auto] md:gap-6 items-end"
         onSubmit={handleBuy}
@@ -115,7 +115,7 @@ export function SearchBar() {
       >
         {/* Make */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="make" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="make" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.make")}
           </label>
           <select
@@ -125,7 +125,7 @@ export function SearchBar() {
               setSelectedMake(e.target.value);
               setSelectedModel("");
             }}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anymake")}</option>
             <option value="yamaha">Yamaha</option>
@@ -137,14 +137,14 @@ export function SearchBar() {
 
         {/* Model */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="model" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="model" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.model")}
           </label>
           <select
             id="model"
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2 disabled:opacity-50"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 disabled:opacity-50"
             disabled={!selectedMake}
             aria-describedby={!selectedMake ? "model-help" : undefined}
           >
@@ -164,14 +164,14 @@ export function SearchBar() {
 
         {/* Year */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="year" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="year" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.year")}
           </label>
           <select
             id="year"
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anyyear")}</option>
             {yearsList.map(year => (
@@ -183,14 +183,14 @@ export function SearchBar() {
 
         {/* Color */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="color" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="color" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.color")}
           </label>
           <select
             id="color"
             value={selectedColor}
             onChange={(e) => setSelectedColor(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anycolor")}</option>
             {colorOptions.map((color) => (
@@ -203,14 +203,14 @@ export function SearchBar() {
 
         {/* Throttle Body */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="throttleBody" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="throttleBody" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.throttlebody")}
           </label>
           <select
             id="throttleBody"
             value={selectedThrottleBody}
             onChange={(e) => setSelectedThrottleBody(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anythrottlebody")}</option>
             {throttleBodyOptions.map((size) => (
@@ -223,14 +223,14 @@ export function SearchBar() {
 
         {/* Throttle Body Size */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="throttleBodySize" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="throttleBodySize" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.size")}
           </label>
           <select
             id="throttleBodySize"
             value={selectedThrottleBodySize}
             onChange={(e) => setSelectedThrottleBodySize(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anysize")}</option>
             {throttleBodySizeOptions.map((size) => (
@@ -243,14 +243,14 @@ export function SearchBar() {
 
         {/* Velocity Stack Height */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="velocityStackHeight" className="text-xs font-semibold uppercase tracking-wider text-black">
+          <label htmlFor="velocityStackHeight" className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
             {t("search.velocityheight")}
           </label>
           <select
             id="velocityStackHeight"
             value={selectedVelocityStackHeight}
             onChange={(e) => setSelectedVelocityStackHeight(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-200 bg-transparent py-2 pl-0 pr-8 text-black focus:border-black focus:ring-0 focus:ring-offset-2"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anyvelocityheight")}</option>
             {velocityStackHeightOptions.map((height) => (
@@ -265,7 +265,7 @@ export function SearchBar() {
         <div>
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-2 bg-black px-6 py-3 font-medium text-white hover:bg-neutral-800 transition-colors h-full focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
+            className="flex w-full items-center justify-center gap-2 bg-white px-6 py-3 font-medium text-black hover:bg-neutral-200 transition-colors h-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-950 rounded-lg"
           >
             <ShoppingCart className="h-5 w-5" aria-hidden="true" />
             <span>{t("search.button")}</span>

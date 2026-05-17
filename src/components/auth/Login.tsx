@@ -1,7 +1,8 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../lib/auth";
 import { useLanguage } from "../../lib/i18n";
+import { publicEnv } from "../../lib/env";
 
 declare global {
   interface Window {
@@ -16,17 +17,14 @@ declare global {
   }
 }
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
+const GOOGLE_CLIENT_ID = publicEnv.VITE_GOOGLE_CLIENT_ID?.trim() ?? "";
 
 export function Login() {
   const { language } = useLanguage();
-  const { isAuthenticated, isOwner, loginAsOwner, loginWithGoogle } = useAuth();
+  const { isAuthenticated, isOwner, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const isId = language === "id";
 
-  const [showAdmin, setShowAdmin] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
@@ -45,8 +43,14 @@ export function Login() {
         client_id: GOOGLE_CLIENT_ID,
         callback: (response: { credential?: string }) => {
           if (response.credential) {
-            loginWithGoogle(response.credential);
-            navigate("/", { replace: true });
+            const result = loginWithGoogle(response.credential);
+            if (!result.success || !result.session) {
+              setError(isId ? "Login Google tidak valid." : "Google sign-in could not be validated.");
+              return;
+            }
+
+            setError("");
+            navigate(result.session.role === "owner" ? "/dashboard" : "/", { replace: true });
           }
         },
       });
@@ -69,21 +73,7 @@ export function Login() {
       }, 200);
       return () => clearInterval(interval);
     }
-  }, [loginWithGoogle, navigate]);
-
-  const handleAdminSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!username.trim() || !password.trim()) {
-      setError(isId ? "Username dan password wajib diisi." : "Username and password are required.");
-      return;
-    }
-    const result = loginAsOwner(username.trim(), password.trim());
-    if (!result.success) {
-      setError(isId ? "Username atau password salah." : "Wrong username or password.");
-      return;
-    }
-    navigate("/dashboard", { replace: true });
-  };
+  }, [isId, loginWithGoogle, navigate]);
 
   return (
     <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-7xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
@@ -101,48 +91,32 @@ export function Login() {
             <div ref={googleBtnRef} className="flex justify-center" />
           ) : (
             <p className="text-center text-xs text-neutral-400">
-              Google Sign-In belum dikonfigurasi.
+              {isId ? "Google Sign-In belum dikonfigurasi." : "Google Sign-In is not configured yet."}
             </p>
           )}
         </div>
 
-        {/* Divider */}
-        {showAdmin && (
-          <>
-            <div className="my-6 flex items-center gap-3">
-              <div className="flex-1 border-t border-neutral-200" />
-              <span className="text-xs text-neutral-400">ADMIN</span>
-              <div className="flex-1 border-t border-neutral-200" />
-            </div>
+        <div className="mt-6 rounded border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-600">
+          <p className="font-medium text-black">
+            {isId ? "Akses dashboard owner" : "Owner dashboard access"}
+          </p>
+          <p className="mt-1">
+            {isId
+              ? "Owner memakai Google Sign-In yang sama. Jika email Google kamu masuk allowlist owner, kamu akan langsung diarahkan ke dashboard."
+              : "Owners use the same Google sign-in. If your Google email is in the owner allowlist, you will be redirected to the dashboard automatically."}
+          </p>
+        </div>
 
-            <form onSubmit={handleAdminSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="username" className="mb-1 block text-sm font-medium text-black">Username</label>
-                <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"
-                  className="w-full border border-neutral-300 px-3 py-2 text-sm text-black outline-none transition focus:border-black" autoComplete="username" />
-              </div>
-              <div>
-                <label htmlFor="password" className="mb-1 block text-sm font-medium text-black">Password</label>
-                <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"
-                  className="w-full border border-neutral-300 px-3 py-2 text-sm text-black outline-none transition focus:border-black" autoComplete="current-password" />
-              </div>
-              {error && <p className="border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-              <button type="submit" className="w-full bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
-                {isId ? "Masuk" : "Sign In"}
-              </button>
-            </form>
-          </>
+        {error && (
+          <p className="mt-4 border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </p>
         )}
 
         <div className="mt-6 flex items-center justify-between">
           <Link to="/" className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-black">
             {isId ? "Kembali ke Beranda" : "Back to Home"}
           </Link>
-          {!showAdmin && (
-            <button type="button" onClick={() => setShowAdmin(true)} className="text-[11px] text-neutral-300 hover:text-neutral-500 transition-colors">
-              Admin
-            </button>
-          )}
         </div>
       </div>
     </section>

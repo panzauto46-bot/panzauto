@@ -6,13 +6,14 @@ import { useCart } from "../../lib/cart";
 import { useAuth } from "../../lib/auth";
 
 export function Header() {
-  const { selectedLocale, setLocale, localeOptions, t } = useLanguage();
+  const { selectedLocale, setLocale, localeOptions, t, language } = useLanguage();
   const { itemCount, toggleCart } = useCart();
-  const { session, isAuthenticated, isOwner, logout } = useAuth();
+  const { session, isAuthenticated, isOwner, isBuyer, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
+  const isId = language === "id";
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
   const goFeatured = location.pathname === "/" ? "#featured" : "/#featured";

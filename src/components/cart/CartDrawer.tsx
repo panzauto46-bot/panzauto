@@ -1,4 +1,4 @@
-import { CheckCircle2, CreditCard, Trash2, X, AlertCircle } from "lucide-react";
+import { CheckCircle2, Trash2, X, AlertCircle } from "lucide-react";
 import { FormEvent, useState, useEffect, useRef } from "react";
 import { useCart } from "../../lib/cart";
 import { useLanguage } from "../../lib/i18n";
@@ -137,10 +137,10 @@ Mohon bantu cek total beserta ongkos kirimnya dari Tangerang ya. Terima kasih!`;
     const waLink = `https://wa.me/${SELLER_WA}?text=${encodeURIComponent(message)}`;
     
     // Save order to Supabase
-    if (session && (session as any).email && supabase) {
+    if (session?.role === "buyer" && supabase) {
       try {
         await supabase.from("orders").insert({
-          buyer_email: (session as any).email,
+          buyer_email: session.email,
           buyer_name: fullName,
           buyer_phone: phone,
           shipping_address: address,
@@ -158,7 +158,10 @@ Mohon bantu cek total beserta ongkos kirimnya dari Tangerang ya. Terima kasih!`;
     window.open(waLink, "_blank");
 
     clearCart();
-    handleClose();
+    setIsCheckingOut(false);
+    setIsPaymentSuccess(true);
+    setCourier("JNE");
+    setFormErrors({});
   };
 
   const handleClose = () => {

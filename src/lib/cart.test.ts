@@ -24,7 +24,6 @@ describe("Cart", () => {
     });
 
     const item = {
-      id: 1,
       title: "Test Product",
       make: "Yamaha",
       model: "NMAX 155",
@@ -41,7 +40,10 @@ describe("Cart", () => {
     });
 
     assert.strictEqual(result.current.items.length, 1);
-    assert.deepStrictEqual(result.current.items[0], item);
+    assert.strictEqual(result.current.items[0]?.title, item.title);
+    assert.strictEqual(result.current.items[0]?.make, item.make);
+    assert.strictEqual(result.current.items[0]?.price, item.price);
+    assert.strictEqual(typeof result.current.items[0]?.id, "string");
     assert.strictEqual(result.current.subtotal, 80000);
   });
 
@@ -51,7 +53,6 @@ describe("Cart", () => {
     });
 
     const item = {
-      id: 1,
       title: "Test Product",
       make: "Yamaha",
       model: "NMAX 155",
@@ -68,9 +69,11 @@ describe("Cart", () => {
     });
 
     assert.strictEqual(result.current.items.length, 1);
+    const itemId = result.current.items[0]?.id;
+    assert.ok(itemId);
 
     act(() => {
-      result.current.removeFromCart(1);
+      result.current.removeFromCart(itemId);
     });
 
     assert.strictEqual(result.current.items.length, 0);
@@ -83,7 +86,6 @@ describe("Cart", () => {
     });
 
     const item = {
-      id: 1,
       title: "Test Product",
       make: "Yamaha",
       model: "NMAX 155",
@@ -115,7 +117,6 @@ describe("Cart", () => {
     });
 
     const item1 = {
-      id: 1,
       title: "Test Product 1",
       make: "Yamaha",
       model: "NMAX 155",
@@ -128,7 +129,6 @@ describe("Cart", () => {
     };
 
     const item2 = {
-      id: 2,
       title: "Test Product 2",
       make: "Honda",
       model: "PCX 150",
