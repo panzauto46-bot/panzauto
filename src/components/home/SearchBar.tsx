@@ -125,7 +125,7 @@ export function SearchBar() {
               setSelectedMake(e.target.value);
               setSelectedModel("");
             }}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anymake")}</option>
             <option value="yamaha">Yamaha</option>
@@ -144,7 +144,7 @@ export function SearchBar() {
             id="model"
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 disabled:opacity-50 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 disabled:opacity-50"
             disabled={!selectedMake}
             aria-describedby={!selectedMake ? "model-help" : undefined}
           >
@@ -171,7 +171,7 @@ export function SearchBar() {
             id="year"
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anyyear")}</option>
             {yearsList.map(year => (
@@ -190,7 +190,7 @@ export function SearchBar() {
             id="color"
             value={selectedColor}
             onChange={(e) => setSelectedColor(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anycolor")}</option>
             {colorOptions.map((color) => (
@@ -210,7 +210,7 @@ export function SearchBar() {
             id="throttleBody"
             value={selectedThrottleBody}
             onChange={(e) => setSelectedThrottleBody(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anythrottlebody")}</option>
             {throttleBodyOptions.map((size) => (
@@ -230,7 +230,7 @@ export function SearchBar() {
             id="throttleBodySize"
             value={selectedThrottleBodySize}
             onChange={(e) => setSelectedThrottleBodySize(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anysize")}</option>
             {throttleBodySizeOptions.map((size) => (
@@ -250,7 +250,7 @@ export function SearchBar() {
             id="velocityStackHeight"
             value={selectedVelocityStackHeight}
             onChange={(e) => setSelectedVelocityStackHeight(e.target.value)}
-            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2 truncate"
+            className="w-full rounded-none border-0 border-b-2 border-neutral-700 bg-neutral-900 py-2.5 pl-0 pr-8 text-white focus:border-white focus:ring-0 focus:ring-offset-2"
           >
             <option value="">{t("search.anyvelocityheight")}</option>
             {velocityStackHeightOptions.map((height) => (
