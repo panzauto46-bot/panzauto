@@ -116,17 +116,7 @@ export function ProductDetail() {
 
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-black sm:text-4xl">{isId ? product.nameId : product.name}</h1>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="flex items-center gap-1" aria-label={`Rating: ${product.rating} out of 5 stars`}>
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-neutral-300"}`} aria-hidden="true" />
-                  ))}
-                </div>
-                <span className="text-sm text-neutral-600">
-                  {product.rating} ({product.reviews} {isId ? "ulasan" : "reviews"})
-                </span>
-              </div>
+              <h1 className="text-3xl font-bold text-black sm:text-4xl mb-4">{isId ? product.nameId : product.name}</h1>
             </div>
 
             <p className="text-base text-neutral-600">{isId ? product.descriptionId : product.description}</p>

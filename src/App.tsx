@@ -78,7 +78,6 @@ export default function App() {
                     ))}
                   </div>
                 </section>
-                <Reviews />
                 <TrustInfo />
                 <About />
               </>
